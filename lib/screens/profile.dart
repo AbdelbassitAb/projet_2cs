@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:projet_2cs/config/config.dart';
 import 'package:projet_2cs/screens/login.dart';
 import 'package:projet_2cs/services/cloud_service.dart';
@@ -143,8 +144,9 @@ class _ProfileState extends State<Profile> {
                               thickness: 2,
                             ),
                             SettingsItem(
-                              info: transportateur?.date_recrutement ??
-                                  '',
+                              info:  DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                  transportateur?.date_recrutement ??
+                                      '')) ,
                               typeInfo: "Date de recrutement:",
                             ),
                             const Divider(

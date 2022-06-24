@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:projet_2cs/config/config.dart';
 import 'package:projet_2cs/screens/login.dart';
@@ -24,9 +25,11 @@ class _MissionsState extends State<Missions> {
   XFile? itin;
   bool noConvention = false;
   bool noItin = false;
-  DateTime? date;
+  DateTime date_debut = DateTime.now();
+  DateTime date_fin = DateTime.now();
   String? attente = "";
   String? num_carte = "";
+  String? kilometrage = "";
 
   void incrimentIndex() {
     setState(() {
@@ -46,7 +49,8 @@ class _MissionsState extends State<Missions> {
         isLoading = true;
       });
       final url = await Provider.of<Auth>(context, listen: false)
-          .completeMission(num_carte!, attente!, convention!, itin!);
+          .completeMission(
+              num_carte!, attente!, convention!, itin!, kilometrage!);
       setState(() {
         isLoading = false;
         currentIndex++;
@@ -60,13 +64,15 @@ class _MissionsState extends State<Missions> {
     try {
       await Provider.of<Auth>(context, listen: false).getMissions();
       Provider.of<Auth>(context, listen: false)
-          .missions
-      !.missions![0]
-          .nom_patient !=
-          null && Provider.of<Auth>(context, listen: false)
-          .missions
-      !.missions![0]
-          .mission_effectue == false
+                      .missions!
+                      .missions![0]
+                      .nom_patient !=
+                  null &&
+              Provider.of<Auth>(context, listen: false)
+                      .missions!
+                      .missions![0]
+                      .mission_effectue ==
+                  false
           ? currentIndex = 0
           : currentIndex = 3;
       setState(() {
@@ -96,7 +102,7 @@ class _MissionsState extends State<Missions> {
         children: [
           defaultButton(
               onPressed: () {
-                date = DateTime.now();
+                date_debut = DateTime.now();
                 setState(() {
                   currentIndex++;
                 });
@@ -129,11 +135,13 @@ class _MissionsState extends State<Missions> {
             infoType: "Prénom",
           ),
           InformationCard(
-            info: Provider.of<Auth>(context)
+            info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                Provider.of<Auth>(context)
                     .missions
                     ?.missions![0]
-                    .date_mission ??
-                "",
+                    .date_mission
+                    .toString() ??
+                    "2020-01-02")),
             infoType: "Date mission",
           ),
           InformationCard(
@@ -185,6 +193,7 @@ class _MissionsState extends State<Missions> {
           defaultButton(
               onPressed: () async {
                 validateForm();
+                date_fin = DateTime.now();
               },
               context: context,
               text: 'Terminer la mission',
@@ -221,6 +230,23 @@ class _MissionsState extends State<Missions> {
                       print(val);
                       setState(() {
                         num_carte = val;
+                      });
+                    }),
+                const SizedBox(height: 20),
+                defaultTextFormField(
+                    label: "Kilometrage",
+                    hint: "** km",
+                    keyboardType: TextInputType.number,
+                    validator: (val) {
+                      if (val == '' || val == null) {
+                        return "please enter the kilometrage";
+                      }
+                      return null;
+                    },
+                    onSaved: (val) {
+                      print(val);
+                      setState(() {
+                        kilometrage = val;
                       });
                     }),
                 const SizedBox(height: 20),
@@ -292,15 +318,16 @@ class _MissionsState extends State<Missions> {
           defaultButton(
               onPressed: () {
                 setState(() {
-
                   Provider.of<Auth>(context, listen: false)
-                              .missions
-                              !.missions![0]
-                              .nom_patient !=
-                          null && Provider.of<Auth>(context, listen: false)
-                      .missions
-                  !.missions![0]
-                      .mission_effectue == false
+                                  .missions!
+                                  .missions![0]
+                                  .nom_patient !=
+                              null &&
+                          Provider.of<Auth>(context, listen: false)
+                                  .missions!
+                                  .missions![0]
+                                  .mission_effectue ==
+                              false
                       ? currentIndex = 0
                       : currentIndex++;
                 });
@@ -320,19 +347,25 @@ class _MissionsState extends State<Missions> {
             height: 20,
           ),
           InformationCard(
-            info: "12 km",
+            info: kilometrage!,
             infoType: "Kilometrage",
           ),
           InformationCard(
-            info: "9:15 am",
+            info: DateFormat('kk:mm').format(date_debut),
             infoType: "Heure de début",
           ),
           InformationCard(
-            info: "10:20 am",
+            info: DateFormat('kk:mm').format(date_fin),
             infoType: "Heure de fin",
           ),
           InformationCard(
-            info: "10/04/2022",
+            info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                Provider.of<Auth>(context)
+                        .missions
+                        ?.missions![0]
+                        .date_mission
+                        .toString() ??
+                    "2020-01-02")),
             infoType: "Date",
           ),
         ],

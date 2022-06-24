@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:projet_2cs/config/config.dart';
 import 'package:projet_2cs/screens/profile.dart';
 import 'package:projet_2cs/services/cloud_service.dart';
@@ -187,10 +188,13 @@ class _AllMissionState extends State<AllMission> {
                                       ),
                                       CardInfo(
                                         icon: "assets/images/calendar.png",
-                                        info: "${ Provider.of<Auth>(context)
-                                            .missions
-                                            ?.missions![index]
-                                            .date_mission}",
+                                        info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                            Provider.of<Auth>(context)
+                                                .missions
+                                                ?.missions![index]
+                                                .date_mission
+                                                .toString() ??
+                                                "2020-01-02")) ,
                                       ),
                                       CardInfo(
                                         icon: "assets/images/clock.png",

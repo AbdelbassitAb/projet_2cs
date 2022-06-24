@@ -151,7 +151,7 @@ class Auth extends ChangeNotifier {
   }
 
   Future<void> completeMission(String num_carte_id_patient,
-      String temps_attente, XFile convention, XFile capture) async {
+      String temps_attente, XFile convention, XFile capture,String kilometrage) async {
 
     final url = apiUrl + "transportateur/missionComplete/${_missions?.missions![0].idmission}";
     Map<String, String> headers = {
@@ -184,6 +184,7 @@ class Auth extends ChangeNotifier {
     request.fields.addAll({
       "num_carte_id_patient": num_carte_id_patient,
       "temps_attente": temps_attente,
+      "kilometrage": kilometrage,
     });
     try {
       var response = await request.send();
