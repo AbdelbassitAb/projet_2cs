@@ -104,6 +104,7 @@ class Auth extends ChangeNotifier {
       if (response.statusCode == 200) {
         final userData = json.decode(response.body);
         print(userData);
+        print(_token);
         _transportateur = Transportateur.fromJson(userData);
 
         notifyListeners();

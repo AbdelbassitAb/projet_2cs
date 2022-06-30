@@ -18,13 +18,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final _formKey = GlobalKey<FormState>();
 
   String email = '';
   String password = '';
   Map<String, String?> loginInfo = {};
   bool _isLoading = false;
   bool showText = false;
+  final _formKey = GlobalKey<FormState>();
+
 
   Future<void> validateForm() async {
     if (_formKey.currentState!.validate()) {
@@ -102,8 +103,8 @@ class _LoginState extends State<Login> {
                                     label: "Email",
                                     hint: "Ecrire votre email",
                                     validator: (val) {
-                                      if (!val!.isValidEmail) {
-                                        return "please enter a valid email";
+                                      if (!val!.isNotEmpty) {
+                                        return "please enter an email";
                                       }
                                       return null;
                                     },

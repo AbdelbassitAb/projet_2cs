@@ -63,22 +63,34 @@ class _MissionsState extends State<Missions> {
   getUserData() async {
     try {
       await Provider.of<Auth>(context, listen: false).getMissions();
-      Provider.of<Auth>(context, listen: false)
+
+      Provider.of<Auth>(context, listen: false).missions != null
+          ? Provider.of<Auth>(context, listen: false).missions!.missions != null
+              ? Provider.of<Auth>(context, listen: false)
                       .missions!
-                      .missions![0]
-                      .nom_patient !=
-                  null &&
-              Provider.of<Auth>(context, listen: false)
                       .missions!
-                      .missions![0]
-                      .mission_effectue ==
-                  false
-          ? currentIndex = 0
+                      .isNotEmpty
+                  ? Provider.of<Auth>(context, listen: false)
+                                  .missions!
+                                  .missions![0]
+                                  .nom_patient !=
+                              null &&
+                          Provider.of<Auth>(context, listen: false)
+                                  .missions!
+                                  .missions![0]
+                                  .mission_effectue ==
+                              false
+                      ? currentIndex = 0
+                      : currentIndex = 3
+                  : currentIndex = 3
+              : currentIndex = 3
           : currentIndex = 3;
+
       setState(() {
         isLoading = false;
       });
     } catch (e) {
+      currentIndex = 3;
       print('test');
       print(e);
       errorSnackBar(context, "Connecting...");
@@ -96,96 +108,114 @@ class _MissionsState extends State<Missions> {
 
   @override
   Widget build(BuildContext context) {
+    /* if(Provider.of<Auth>(context).missions!.missions!.isNotEmpty){
+      setState(() {
+        currentIndex = 3;
+      });
+    }*/
+
     List<Widget> tabs = [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          defaultButton(
-              onPressed: () {
-                date_debut = DateTime.now();
-                setState(() {
-                  currentIndex++;
-                });
-              },
-              context: context,
-              text: 'Lancer la mission',
-              showArrow: true),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Vous avez une missions programmés pour :',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          InformationCard(
-            info:
-                Provider.of<Auth>(context).missions?.missions![0].nom_patient ??
-                    "",
-            infoType: "Nom",
-          ),
-          InformationCard(
-            info: Provider.of<Auth>(context)
-                    .missions
-                    ?.missions![0]
-                    .prenom_patient ??
-                "",
-            infoType: "Prénom",
-          ),
-          InformationCard(
-            info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                Provider.of<Auth>(context)
-                    .missions
-                    ?.missions![0]
-                    .date_mission
-                    .toString() ??
-                    "2020-01-02")),
-            infoType: "Date mission",
-          ),
-          InformationCard(
-            info: Provider.of<Auth>(context)
-                    .missions
-                    ?.missions![0]
-                    .heure_depart ??
-                "",
-            infoType: "Heure départ",
-          ),
-          InformationCard(
-            info: Provider.of<Auth>(context)
-                    .missions
-                    ?.missions![0]
-                    .adresse_depart ??
-                "",
-            infoType: "Adresse départ",
-          ),
-          InformationCard(
-            info: Provider.of<Auth>(context)
-                    .missions
-                    ?.missions![0]
-                    .adresse_arrive ??
-                "",
-            infoType: "Adresse arrivé",
-          ),
-          InformationCard(
-            info: Provider.of<Auth>(context)
-                    .missions
-                    ?.missions![0]
-                    .nombre_patient
-                    .toString() ??
-                "",
-            infoType: "Nombre de patient",
-          ),
-          InformationCard(
-            info: Provider.of<Auth>(context).missions?.missions![0].attente! ??
-                    false
-                ? "Oui"
-                : "non",
-            infoType: "Attente",
-          )
-        ],
-      ),
+      Provider.of<Auth>(context).missions != null
+          ? Provider.of<Auth>(context).missions!.missions != null
+              ? Provider.of<Auth>(context).missions!.missions!.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        defaultButton(
+                            onPressed: () {
+                              date_debut = DateTime.now();
+                              setState(() {
+                                currentIndex++;
+                              });
+                            },
+                            context: context,
+                            text: 'Lancer la mission',
+                            showArrow: true),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Vous avez une missions programmés pour :',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        InformationCard(
+                          info: Provider.of<Auth>(context)
+                                  .missions!
+                                  .missions![0]
+                                  .nom_patient ??
+                              "",
+                          infoType: "Nom",
+                        ),
+                        InformationCard(
+                          info: Provider.of<Auth>(context)
+                                  .missions
+                                  ?.missions![0]
+                                  .prenom_patient ??
+                              "",
+                          infoType: "Prénom",
+                        ),
+                        InformationCard(
+                          info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                              Provider.of<Auth>(context)
+                                      .missions
+                                      ?.missions![0]
+                                      .date_mission
+                                      .toString() ??
+                                  "2020-01-02")),
+                          infoType: "Date mission",
+                        ),
+                        InformationCard(
+                          info: Provider.of<Auth>(context)
+                                  .missions
+                                  ?.missions![0]
+                                  .heure_depart ??
+                              "",
+                          infoType: "Heure départ",
+                        ),
+                        InformationCard(
+                          info: Provider.of<Auth>(context)
+                                  .missions
+                                  ?.missions![0]
+                                  .adresse_depart ??
+                              "",
+                          infoType: "Adresse départ",
+                        ),
+                        InformationCard(
+                          info: Provider.of<Auth>(context)
+                                  .missions
+                                  ?.missions![0]
+                                  .adresse_arrive ??
+                              "",
+                          infoType: "Adresse arrivé",
+                        ),
+                        InformationCard(
+                          info: Provider.of<Auth>(context)
+                                  .missions
+                                  ?.missions![0]
+                                  .nombre_patient
+                                  .toString() ??
+                              "",
+                          infoType: "Nombre de patient",
+                        ),
+                        InformationCard(
+                          info: Provider.of<Auth>(context)
+                                      .missions
+                                      ?.missions![0]
+                                      .attente! ??
+                                  false
+                              ? "Oui"
+                              : "non",
+                          infoType: "Attente",
+                        )
+                      ],
+                    )
+                  : SizedBox()
+              : SizedBox()
+          : SizedBox(),
 
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,67 +339,77 @@ class _MissionsState extends State<Missions> {
           ),
         ],
       ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-              child: Lottie.asset("assets/images/done.json",
-                  height: MediaQuery.of(context).size.width * 0.5)),
-          defaultButton(
-              onPressed: () {
-                setState(() {
-                  Provider.of<Auth>(context, listen: false)
-                                  .missions!
-                                  .missions![0]
-                                  .nom_patient !=
-                              null &&
-                          Provider.of<Auth>(context, listen: false)
-                                  .missions!
-                                  .missions![0]
-                                  .mission_effectue ==
-                              false
-                      ? currentIndex = 0
-                      : currentIndex++;
-                });
-              },
-              context: context,
-              text: 'Retourner',
-              showArrow: true),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Informations de la missions:',
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: primaryColor),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          InformationCard(
-            info: kilometrage!,
-            infoType: "Kilometrage",
-          ),
-          InformationCard(
-            info: DateFormat('kk:mm').format(date_debut),
-            infoType: "Heure de début",
-          ),
-          InformationCard(
-            info: DateFormat('kk:mm').format(date_fin),
-            infoType: "Heure de fin",
-          ),
-          InformationCard(
-            info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                Provider.of<Auth>(context)
-                        .missions
-                        ?.missions![0]
-                        .date_mission
-                        .toString() ??
-                    "2020-01-02")),
-            infoType: "Date",
-          ),
-        ],
-      ),
+      Provider.of<Auth>(context).missions != null
+          ? Provider.of<Auth>(context).missions!.missions != null
+              ? Provider.of<Auth>(context).missions!.missions!.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                            child: Lottie.asset("assets/images/done.json",
+                                height:
+                                    MediaQuery.of(context).size.width * 0.5)),
+                        defaultButton(
+                            onPressed: () {
+                              setState(() {
+                                Provider.of<Auth>(context, listen: false)
+                                                .missions!
+                                                .missions![0]
+                                                .nom_patient !=
+                                            null &&
+                                        Provider.of<Auth>(context,
+                                                    listen: false)
+                                                .missions!
+                                                .missions![0]
+                                                .mission_effectue ==
+                                            false
+                                    ? currentIndex = 0
+                                    : currentIndex++;
+                              });
+                            },
+                            context: context,
+                            text: 'Retourner',
+                            showArrow: true),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Informations de la missions:',
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: primaryColor),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        InformationCard(
+                          info: kilometrage!,
+                          infoType: "Kilometrage",
+                        ),
+                        InformationCard(
+                          info: DateFormat('kk:mm').format(date_debut),
+                          infoType: "Heure de début",
+                        ),
+                        InformationCard(
+                          info: DateFormat('kk:mm').format(date_fin),
+                          infoType: "Heure de fin",
+                        ),
+                        InformationCard(
+                          info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                              Provider.of<Auth>(context)
+                                      .missions
+                                      ?.missions![0]
+                                      .date_mission
+                                      .toString() ??
+                                  "2020-01-02")),
+                          infoType: "Date",
+                        ),
+                      ],
+                    )
+                  : SizedBox()
+              : SizedBox()
+          : SizedBox(),
 
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
