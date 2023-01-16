@@ -45,8 +45,8 @@ class _MissionDetailState extends State<MissionDetail> {
                     infoType: "Prénom",
                   ),
                   InformationCard(
-                    info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                        widget.mission?.date_mission.toString() ?? "")),
+                    info:
+                        widget.mission?.date_mission.toString() ?? "",
                     infoType: "Date mission",
                   ),
                   InformationCard(

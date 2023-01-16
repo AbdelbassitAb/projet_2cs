@@ -64,7 +64,7 @@ class _AllMissionState extends State<AllMission> {
                             const Text(
                               'Bonjour!',
                               style:
-                              TextStyle(color: Colors.grey, fontSize: 30),
+                                  TextStyle(color: Colors.grey, fontSize: 30),
                             ),
                             Spacer(),
                             GestureDetector(
@@ -72,8 +72,7 @@ class _AllMissionState extends State<AllMission> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                      const Profile()),
+                                      builder: (context) => const Profile()),
                                 );
                               },
                               child: Container(
@@ -89,29 +88,28 @@ class _AllMissionState extends State<AllMission> {
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                   ),
-                                  child: transportateur
-                                      ?.photo_transportateur !=
-                                      null
+                                  child: transportateur?.photo_transportateur !=
+                                          null
                                       ? FadeInImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      transportateur!
-                                          .photo_transportateur!,
-                                    ),
-                                    height: 30,
-                                    width: 30,
-                                    placeholder: const AssetImage(
-                                      "assets/images/placeholder-image.png",
-                                    ),
-                                  )
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            transportateur!
+                                                .photo_transportateur!,
+                                          ),
+                                          height: 30,
+                                          width: 30,
+                                          placeholder: const AssetImage(
+                                            "assets/images/placeholder-image.png",
+                                          ),
+                                        )
                                       : const CircleAvatar(
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 20,
-                                    ),
-                                    backgroundColor: Colors.red,
-                                    radius: 30,
-                                  ),
+                                          child: Icon(
+                                            Icons.person,
+                                            size: 20,
+                                          ),
+                                          backgroundColor: Colors.red,
+                                          radius: 30,
+                                        ),
                                 ),
                               ),
                             ),
@@ -125,7 +123,7 @@ class _AllMissionState extends State<AllMission> {
                             ),
                           ],
                         ),
-                         Text(
+                        Text(
                           transportateur?.prenom ?? '' + ',',
                           style: TextStyle(
                               color: primaryColor,
@@ -144,22 +142,24 @@ class _AllMissionState extends State<AllMission> {
                         ),
                         Expanded(
                           child: ListView.builder(
-                            itemCount: Provider
-                                .of<Auth>(context)
+                            itemCount: Provider.of<Auth>(context)
                                 .missions
                                 ?.missions!
                                 .length,
                             itemBuilder: (context, index) {
+                              print(
+                                  "${Provider.of<Auth>(context).missions?.missions![index].nom_patient}");
                               return GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                         MissionDetail(mission: Provider
-                                             .of<Auth>(context)
-                                             .missions
-                                             ?.missions![index],)),
+                                        builder: (context) => MissionDetail(
+                                              mission:
+                                                  Provider.of<Auth>(context)
+                                                      .missions
+                                                      ?.missions![index],
+                                            )),
                                   );
                                 },
                                 child: Container(
@@ -175,40 +175,29 @@ class _AllMissionState extends State<AllMission> {
                                     children: [
                                       CardInfo(
                                         icon: "assets/images/person.png",
-                                        info: "${Provider
-                                            .of<Auth>(context)
-                                            .missions
-                                            ?.missions![index]
-                                            .nom_patient} ${ Provider
-                                            .of<Auth>(context)
-                                            .missions
-                                            ?.missions![index]
-                                            .prenom_patient}"
-                                        ,
+                                        info:
+                                            "${Provider.of<Auth>(context).missions?.missions![index].nom_patient} ${Provider.of<Auth>(context).missions?.missions![index].prenom_patient}",
                                       ),
                                       CardInfo(
                                         icon: "assets/images/calendar.png",
-                                        info: DateFormat('yyyy-MM-dd').format(DateTime.parse(
-                                            Provider.of<Auth>(context)
-                                                .missions
-                                                ?.missions![index]
-                                                .date_mission
-                                                .toString() ??
-                                                "2020-01-02")) ,
+                                        info: DateFormat('yyyy-MM-dd').format(
+                                            DateTime.parse(
+                                                Provider.of<Auth>(context)
+                                                        .missions
+                                                        ?.missions![index]
+                                                        .date_mission
+                                                        .toString() ??
+                                                    "2020-01-02")),
                                       ),
                                       CardInfo(
                                         icon: "assets/images/clock.png",
-                                        info: "${ Provider.of<Auth>(context)
-                                            .missions
-                                            ?.missions![index]
-                                            .heure_depart}",
+                                        info:
+                                            "${Provider.of<Auth>(context).missions?.missions![index].heure_depart}",
                                       ),
                                       CardInfo(
                                         icon: "assets/images/location.png",
-                                        info: "${ Provider.of<Auth>(context)
-                                            .missions
-                                            ?.missions![index]
-                                            .adresse_depart}",
+                                        info:
+                                            "${Provider.of<Auth>(context).missions?.missions![index].adresse_depart}",
                                       ),
                                     ],
                                   ),

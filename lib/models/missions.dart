@@ -58,7 +58,7 @@ class MissionModel {
   String? convention_url;
   String? image_liteneraire;
   bool? mission_effectue;
-  int? kilometrage;
+  String? kilometrage;
 
   factory MissionModel.fromJson(dynamic json) => MissionModel(
     nom_patient: json["nom_patient"],
@@ -77,7 +77,7 @@ class MissionModel {
     convention_url: json["convention_url"],
     image_liteneraire: json["image_liteneraire"],
     mission_effectue: json["mission_effectue"],
-    kilometrage: json["kilometrage"],
+    kilometrage: json["kilometrage"].toString(),
   );
 
 }
